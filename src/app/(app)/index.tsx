@@ -24,3 +24,9 @@ export default function Home() {
   // Filter by category + search, then sort by date added.
   const visible = useMemo(() => {
     const words = query.toLowerCase().split(/\s+/).filter(Boolean);
+     return notes
+      .filter((n) => category === 'All' || n.category === category)
+      // SEARCH: every typed word must appear somewhere in the title or text.
+      .filter((n) => words.every((w) => `${n.title} ${n.text}`.toLowerCase().includes(w)))
+      .sort((a, b) => (newestFirst ? b.createdAt - a.createdAt : a.createdAt - b.createdAt));
+  }, [notes, query, category, newestFirst]);
