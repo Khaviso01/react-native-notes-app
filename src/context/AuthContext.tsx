@@ -69,7 +69,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         // Look up the stored user record using a trimmed, lowercase email address.
         const u = (await getUsers()).find((x) => x.email === email.trim().toLowerCase());
         if (!u || u.pass !== (await hash(password))) return 'Wrong email or password.';
-        
+
         // Save active session ID and hydrate authentication state.
         await AsyncStorage.setItem('session', u.id);
         setUser(u);
@@ -83,15 +83,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
 
     // Update email / username / password. The current password is required for safety.
-  const updateProfile = async ({ email, username, currentPassword, newPassword }: UpdateArgs): Promise<string | null> => {
-    if (!user) return 'You are not logged in.';
-    if (user.pass !== (await hash(currentPassword))) return 'Current password is incorrect.';
-    email = email.trim().toLowerCase();
+    const updateProfile = async ({ email, username, currentPassword, newPassword }: UpdateArgs): Promise<string | null> => {
+        if (!user) return 'You are not logged in.';
+        if (user.pass !== (await hash(currentPassword))) return 'Current password is incorrect.';
+        email = email.trim().toLowerCase();
 
-    const users = await getUsers();
-    if (users.some((u) => u.email === email && u.id !== user.id)) return 'That email is already in use.';
-    if (newPassword && newPassword.length < 6) return 'New password must be 6+ characters.';
-    const updated = {
-      ...user, email, username: username.trim(),
-      pass: newPassword ? await hash(newPassword) : user.pass,
+        // Prevent claiming an email already assigned to a different user record.
+        const users = await getUsers();
+        if (users.some((u) => u.email === email && u.id !== user.id)) return 'That email is already in use.';
+        if (newPassword && newPassword.length < 6) return 'New password must be 6+ characters.';
+        const updated = {
+            ...user, email, username: username.trim(),
+            pass: newPassword ? await hash(newPassword) : user.pass,
+        };
+
+        // Persist the updated user record inside the stored users collection and refresh active state.
+        await AsyncStorage.setItem('users', JSON.stringify(users.map((u) => (u.id === user.id ? updated : u))));
+        setUser(updated);
+        return null;
     };
