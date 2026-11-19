@@ -10,21 +10,21 @@ interface UpdateArgs { email: string; username: string; currentPassword: string;
 
 // Authentication context contract
 interface AuthCtx {
-  user: User | null;
-  loading: boolean;
-  register: (email: string, username: string, password: string) => Promise<string | null>;
-  login: (email: string, password: string) => Promise<string | null>;
-  logout: () => Promise<void>;
-  updateProfile: (args: UpdateArgs) => Promise<string | null>;
+    user: User | null;
+    loading: boolean;
+    register: (email: string, username: string, password: string) => Promise<string | null>;
+    login: (email: string, password: string) => Promise<string | null>;
+    logout: () => Promise<void>;
+    updateProfile: (args: UpdateArgs) => Promise<string | null>;
 }
 
 // React context instance holding authentication state and actions 
 const AuthContext = createContext<AuthCtx | null>(null);
 // Hook for screens; throws a clear error if used outside <AuthProvider>.
 export const useAuth = (): AuthCtx => {
-  const ctx = useContext(AuthContext);
-  if (!ctx) throw new Error('useAuth must be used inside AuthProvider');
-  return ctx;
+    const ctx = useContext(AuthContext);
+    if (!ctx) throw new Error('useAuth must be used inside AuthProvider');
+    return ctx;
 };
 
 // Loading registered users records
@@ -33,15 +33,33 @@ const getUsers = async (): Promise<User[]> => JSON.parse((await AsyncStorage.get
 
 // Provider component managing authenticated session state and persistance
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);      // the logged-in user (or null)
-  const [loading, setLoading] = useState(true); // true while we check for a saved session
+    const [user, setUser] = useState<User | null>(null);      // the logged-in user (or null)
+    const [loading, setLoading] = useState(true); // true while we check for a saved session
 
-  // Async storage to restore the previous session if there is one.
-  useEffect(() => {
-    (async () => {
-      const id = await AsyncStorage.getItem('session');
-      const found = (await getUsers()).find((u) => u.id === id);
-      setUser(found || null);
-      setLoading(false);
-    })();
-  }, []);
+    // Async storage to restore the previous session if there is one.
+    useEffect(() => {
+        (async () => {
+            const id = await AsyncStorage.getItem('session');
+            const found = (await getUsers()).find((u) => u.id === id);
+            setUser(found || null);
+            setLoading(false);
+        })();
+    }, []);
+
+    // Create a new account. Returns an error message string, or null on success.
+    const register = async (email: string, username: string, password: string): Promise<string | null> => {
+        email = email.trim().toLowerCase();
+        if (!email.includes('@') || !username.trim() || password.length < 6)
+            return 'Enter a valid email, a username and a password of 6+ characters.';
+        
+        // check existing stored users to prevent duplicate email registration
+        const users = await getUsers();
+        if (users.some((u) => u.email === email)) return 'That email is already registered.';
+        const u = { id: Date.now().toString(), email, username: username.trim(), pass: await hash(password) };
+        
+        // Persist updated user list and immediately mark the new user as the active session.
+        await AsyncStorage.setItem('users', JSON.stringify([...users, u]));
+        await AsyncStorage.setItem('session', u.id);
+        setUser(u);
+        return null;
+    };
