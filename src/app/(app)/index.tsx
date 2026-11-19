@@ -77,20 +77,22 @@ export default function Home() {
                         onPress={() => router.push({ pathname: '/note', params: { id: item.id } })}
                         onLongPress={() => confirmDelete(item)}
                         style={{ flex: 1, minHeight: 170, borderRadius: 18, padding: 14, backgroundColor: C.cards[index % C.cards.length], justifyContent: 'space-between' }}
-                    ></TouchableOpacity>
+                    >
 
-                    <View>
-              {!!item.title && <Text style={{ fontWeight: '700', marginBottom: 4 }}>{item.title}</Text>}
-              <Text numberOfLines={4}>{item.text}</Text>
-            </View>
+                        <View>
+                            {!!item.title && <Text style={{ fontWeight: '700', marginBottom: 4 }}>{item.title}</Text>}
+                            <Text numberOfLines={4}>{item.text}</Text>
+                        </View>
 
-            <View>
-              <Text style={{ fontSize: 12, color: '#555' }}>{item.category}</Text>
-              <Text style={{ fontSize: 12, color: '#555' }}>
-                {fmt(item.createdAt)}{item.editedAt ? ` · edited ${fmt(item.editedAt)}` : ''}
-              </Text>
-            </View>
-                    />
+                        <View>
+                            <Text style={{ fontSize: 12, color: '#555' }}>{item.category}</Text>
+                            <Text style={{ fontSize: 12, color: '#555' }}>
+                                {fmt(item.createdAt)}{item.editedAt ? ` · edited ${fmt(item.editedAt)}` : ''}
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
+                )}
+            />
         </SafeAreaView>
     );
 }
