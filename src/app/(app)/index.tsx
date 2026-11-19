@@ -65,7 +65,20 @@ export default function Home() {
                 ))}
             </View>
 
-
+            <FlatList
+                data={visible}
+                numColumns={2}
+                keyExtractor={(n) => n.id}
+                columnWrapperStyle={{ gap: 12 }}
+                contentContainerStyle={{ gap: 12, paddingBottom: 20 }}
+                ListEmptyComponent={<Text style={{ color: C.muted, textAlign: 'center', marginTop: 40 }}>No notes yet. Tap + to add one.</Text>}
+                renderItem={({ item, index }) => (
+                    <TouchableOpacity
+                        onPress={() => router.push({ pathname: '/note', params: { id: item.id } })}
+                        onLongPress={() => confirmDelete(item)}
+                        style={{ flex: 1, minHeight: 170, borderRadius: 18, padding: 14, backgroundColor: C.cards[index % C.cards.length], justifyContent: 'space-between' }}
+                    ></TouchableOpacity>
+                    />
         </SafeAreaView>
     );
 }
