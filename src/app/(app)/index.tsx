@@ -48,6 +48,11 @@ export default function Home() {
                 <Ionicons name="search" size={18} color={C.text} />
                 <TextInput value={query} onChangeText={setQuery} placeholder="Search" placeholderTextColor={C.muted}
                     style={{ flex: 1, color: C.text, padding: 14 }} />
+
+                <TouchableOpacity onPress={() => setNewestFirst(!newestFirst)} style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Ionicons name={newestFirst ? 'arrow-down' : 'arrow-up'} size={16} color={C.accent} />
+                    <Text style={{ color: C.accent, marginLeft: 4 }}>{newestFirst ? 'Newest' : 'Oldest'}</Text>
+                </TouchableOpacity>
             </View>
 
 
