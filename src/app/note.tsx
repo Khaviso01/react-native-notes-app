@@ -4,24 +4,31 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import Field from '../components/Field';
 import { useNotes } from '../context/NotesContext';
 import { C, CATEGORIES } from '../theme';
-         
-// note creation and editing screen component handlng
-export default function NoteScreen() {                                                                                              
-  const { id } = useLocalSearchParams<{ id?: string }>();
-  const router = useRouter();
-  const { notes, addNote, updateNote, deleteNote } = useNotes();
-  const existing = notes.find((n) => n.id === id);
-  
-  // Local form state for the note title, body text, and category, seeded from the existing note or defaults.
-  const [title, setTitle] = useState(existing?.title || '');
-  const [text, setText] = useState(existing?.text || '');
-  const [category, setCategory] = useState(existing?.category || CATEGORIES[0]);
 
-  // Validate note content, persist
-  const save = () => {
-    // Require non-empty body text before saving a note.
-    if (!text.trim()) return Alert.alert('Note is empty', 'Write something before saving.');
-    const data = { title: title.trim(), text: text.trim(), category };
-    existing ? updateNote(existing.id, data) : addNote(data);
-    router.back();
-  };
+// note creation and editing screen component handlng
+export default function NoteScreen() {
+    const { id } = useLocalSearchParams<{ id?: string }>();
+    const router = useRouter();
+    const { notes, addNote, updateNote, deleteNote } = useNotes();
+    const existing = notes.find((n) => n.id === id);
+
+    // Local form state for the note title, body text, and category, seeded from the existing note or defaults.
+    const [title, setTitle] = useState(existing?.title || '');
+    const [text, setText] = useState(existing?.text || '');
+    const [category, setCategory] = useState(existing?.category || CATEGORIES[0]);
+
+    // Validate note content, persist
+    const save = () => {
+        // Require non-empty body text before saving a note.
+        if (!text.trim()) return Alert.alert('Note is empty', 'Write something before saving.');
+        const data = { title: title.trim(), text: text.trim(), category };
+        existing ? updateNote(existing.id, data) : addNote(data);
+        router.back();
+    };
+
+    // Prompt for confirmation before deleting the existing note and returning to the previous screen. 
+    const remove = () =>
+        Alert.alert('Delete note?', 'This cannot be undone.', [
+            { text: 'Cancel', style: 'cancel' },
+            { text: 'Delete', style: 'destructive', onPress: () => { deleteNote(existing.id); router.back(); } },
+        ]);
