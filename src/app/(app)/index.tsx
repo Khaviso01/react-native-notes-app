@@ -37,3 +37,10 @@ export default function Home() {
       { text: 'Cancel', style: 'cancel' },
       { text: 'Delete', style: 'destructive', onPress: () => deleteNote(n.id) },
     ]);
+
+     return (
+    <SafeAreaView style={{ flex: 1, backgroundColor: C.bg, paddingHorizontal: 20 }}>
+      
+    </SafeAreaView>
+  );
+}
