@@ -19,3 +19,10 @@ function Guard() {
     if (!user && !inAuthPages) router.replace('/login');
     else if (user && inAuthPages) router.replace('/');
   }, [user, loading, segments]);
+  
+  return (
+    <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: C.bg } }}>
+      <Stack.Screen name="note" options={{ presentation: 'modal' }} />
+    </Stack>
+  );
+}
