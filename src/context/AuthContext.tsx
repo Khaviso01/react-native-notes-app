@@ -26,3 +26,7 @@ export const useAuth = (): AuthCtx => {
   if (!ctx) throw new Error('useAuth must be used inside AuthProvider');
   return ctx;
 };
+
+// Loading registered users records
+const hash = (p: string) => Crypto.digestStringAsync(Crypto.CryptoDigestAlgorithm.SHA256, p);
+const getUsers = async (): Promise<User[]> => JSON.parse((await AsyncStorage.getItem('users')) || '[]');
