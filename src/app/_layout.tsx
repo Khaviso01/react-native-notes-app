@@ -26,3 +26,15 @@ function Guard() {
         </Stack>
     );
 }
+
+// Providers make user + notes data available to every screen.
+export default function Root() {
+  return (
+    <AuthProvider>
+      <NotesProvider>
+        <StatusBar style="light" />
+        <Guard />
+      </NotesProvider>
+    </AuthProvider>
+  );
+}
