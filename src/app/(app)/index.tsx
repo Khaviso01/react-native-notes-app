@@ -55,6 +55,11 @@ export default function Home() {
                 </TouchableOpacity>
             </View>
 
+            {/* Category tabs: All + each category */}
+            <View style={{ flexDirection: 'row', marginBottom: 16 }}>
+                
+            </View>
+
 
         </SafeAreaView>
     );
