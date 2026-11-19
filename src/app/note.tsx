@@ -26,12 +26,14 @@ export default function NoteScreen() {
         router.back();
     };
 
-    // Prompt for confirmation before deleting the existing note and returning to the previous screen. 
-    const remove = () =>
+    // confirmation before deleting the existing note and returning to the previous screen. 
+    const remove = () => {
+        if (!existing) return; // nothing to delete on the "New note" screen
         Alert.alert('Delete note?', 'This cannot be undone.', [
             { text: 'Cancel', style: 'cancel' },
             { text: 'Delete', style: 'destructive', onPress: () => { deleteNote(existing.id); router.back(); } },
         ]);
+    };
 
     return (
         <ScrollView style={{ flex: 1, backgroundColor: C.bg }} contentContainerStyle={{ padding: 24 }}>
