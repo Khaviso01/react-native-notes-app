@@ -78,6 +78,11 @@ export default function Home() {
                         onLongPress={() => confirmDelete(item)}
                         style={{ flex: 1, minHeight: 170, borderRadius: 18, padding: 14, backgroundColor: C.cards[index % C.cards.length], justifyContent: 'space-between' }}
                     ></TouchableOpacity>
+
+                    <View>
+              {!!item.title && <Text style={{ fontWeight: '700', marginBottom: 4 }}>{item.title}</Text>}
+              <Text numberOfLines={4}>{item.text}</Text>
+            </View>
                     />
         </SafeAreaView>
     );
