@@ -44,6 +44,11 @@ export default function Home() {
                 Good day,{'\n'}{user!.username}!
             </Text>
 
+            <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: C.surface, borderRadius: 14, paddingHorizontal: 14, marginVertical: 16 }}>
+                
+            </View>
+
+
         </SafeAreaView>
     );
 }
