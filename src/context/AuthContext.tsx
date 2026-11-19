@@ -30,3 +30,18 @@ export const useAuth = (): AuthCtx => {
 // Loading registered users records
 const hash = (p: string) => Crypto.digestStringAsync(Crypto.CryptoDigestAlgorithm.SHA256, p);
 const getUsers = async (): Promise<User[]> => JSON.parse((await AsyncStorage.getItem('users')) || '[]');
+
+// Provider component managing authenticated session state and persistance
+export function AuthProvider({ children }: { children: ReactNode }) {
+  const [user, setUser] = useState<User | null>(null);      // the logged-in user (or null)
+  const [loading, setLoading] = useState(true); // true while we check for a saved session
+
+  // Async storage to restore the previous session if there is one.
+  useEffect(() => {
+    (async () => {
+      const id = await AsyncStorage.getItem('session');
+      const found = (await getUsers()).find((u) => u.id === id);
+      setUser(found || null);
+      setLoading(false);
+    })();
+  }, []);
