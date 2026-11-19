@@ -7,3 +7,22 @@ export interface User { id: string; email: string; username: string; pass: strin
 
 // Input payload for updating details
 interface UpdateArgs { email: string; username: string; currentPassword: string; newPassword?: string }
+
+// Authentication context contract
+interface AuthCtx {
+  user: User | null;
+  loading: boolean;
+  register: (email: string, username: string, password: string) => Promise<string | null>;
+  login: (email: string, password: string) => Promise<string | null>;
+  logout: () => Promise<void>;
+  updateProfile: (args: UpdateArgs) => Promise<string | null>;
+}
+
+// React context instance holding authentication state and actions 
+const AuthContext = createContext<AuthCtx | null>(null);
+// Hook for screens; throws a clear error if used outside <AuthProvider>.
+export const useAuth = (): AuthCtx => {
+  const ctx = useContext(AuthContext);
+  if (!ctx) throw new Error('useAuth must be used inside AuthProvider');
+  return ctx;
+};
