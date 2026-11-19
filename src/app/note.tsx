@@ -32,3 +32,39 @@ export default function NoteScreen() {
             { text: 'Cancel', style: 'cancel' },
             { text: 'Delete', style: 'destructive', onPress: () => { deleteNote(existing.id); router.back(); } },
         ]);
+
+    return (
+        <ScrollView style={{ flex: 1, backgroundColor: C.bg }} contentContainerStyle={{ padding: 24 }}>
+            <Text style={{ color: C.text, fontSize: 26, fontWeight: '700', marginBottom: 16 }}>{existing ? 'Edit note' : 'New note'}</Text>
+            <Field placeholder="Title (optional)" value={title} onChangeText={setTitle} autoCapitalize="sentences" />
+            <Field placeholder="Write your note..." value={text} onChangeText={setText} multiline autoCapitalize="sentences"
+                style={{ minHeight: 160, textAlignVertical: 'top' }} />
+
+            {/* Category picker */}
+            <View style={{ flexDirection: 'row', marginBottom: 20 }}>
+                {CATEGORIES.map((c) => (
+                    <TouchableOpacity key={c} onPress={() => setCategory(c)}
+                        style={{ paddingVertical: 10, paddingHorizontal: 16, borderRadius: 20, marginRight: 8, backgroundColor: category === c ? C.accent : C.surface }}>
+                        <Text style={{ color: category === c ? '#000' : C.text }}>{c}</Text>
+                    </TouchableOpacity>
+                ))}
+            </View>
+
+            {existing && (
+                <Text style={{ color: C.muted, marginBottom: 16 }}>
+                    Added {new Date(existing.createdAt).toLocaleString()}
+                    {existing.editedAt ? `\nLast edited ${new Date(existing.editedAt).toLocaleString()}` : ''}
+                </Text>
+            )}
+
+            <TouchableOpacity onPress={save} style={{ backgroundColor: C.accent, padding: 16, borderRadius: 14, alignItems: 'center' }}>
+                <Text style={{ fontWeight: '700', fontSize: 16 }}>{existing ? 'Save changes' : 'Add note'}</Text>
+            </TouchableOpacity>
+            {existing && (
+                <TouchableOpacity onPress={remove} style={{ padding: 16, alignItems: 'center' }}>
+                    <Text style={{ color: C.danger }}>Delete note</Text>
+                </TouchableOpacity>
+            )}
+        </ScrollView>
+    );
+}
