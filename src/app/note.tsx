@@ -10,4 +10,9 @@ export default function NoteScreen() {
   const { id } = useLocalSearchParams<{ id?: string }>();
   const router = useRouter();
   const { notes, addNote, updateNote, deleteNote } = useNotes();
-  const existing = notes.find((n) => n.id === id);                                                                                                                                                                                                                                                                           
+  const existing = notes.find((n) => n.id === id);
+  
+  // Local form state for the note title, body text, and category, seeded from the existing note or defaults.
+  const [title, setTitle] = useState(existing?.title || '');
+  const [text, setText] = useState(existing?.text || '');
+  const [category, setCategory] = useState(existing?.category || CATEGORIES[0]);
