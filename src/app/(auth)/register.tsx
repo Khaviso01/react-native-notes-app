@@ -12,3 +12,5 @@ export default function Register() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  // Create the account; on success the route guard moves us to the home screen.
+  const submit = async () => setError((await register(email, username, password)) || '');
