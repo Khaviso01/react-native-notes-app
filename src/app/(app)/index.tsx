@@ -57,7 +57,12 @@ export default function Home() {
 
             {/* Category tabs: All + each category */}
             <View style={{ flexDirection: 'row', marginBottom: 16 }}>
-                
+                {['All', ...CATEGORIES].map((c) => (
+                    <TouchableOpacity key={c} onPress={() => setCategory(c)} style={{ marginRight: 22 }}>
+                        <Text style={{ color: C.text, fontSize: 18, opacity: category === c ? 1 : 0.7 }}>{c === 'All' ? 'All Notes' : c}</Text>
+                        {category === c && <View style={{ height: 3, backgroundColor: C.accent, marginTop: 4 }} />}
+                    </TouchableOpacity>
+                ))}
             </View>
 
 
