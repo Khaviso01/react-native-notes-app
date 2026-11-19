@@ -30,3 +30,10 @@ export default function Home() {
       .filter((n) => words.every((w) => `${n.title} ${n.text}`.toLowerCase().includes(w)))
       .sort((a, b) => (newestFirst ? b.createdAt - a.createdAt : a.createdAt - b.createdAt));
   }, [notes, query, category, newestFirst]);
+
+  // Display a confirmation dialog before permanently deleting a note from the Home list.
+  const confirmDelete = (n: Note) =>
+    Alert.alert('Delete note?', 'This cannot be undone.', [
+      { text: 'Cancel', style: 'cancel' },
+      { text: 'Delete', style: 'destructive', onPress: () => deleteNote(n.id) },
+    ]);
