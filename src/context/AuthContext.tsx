@@ -102,3 +102,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setUser(updated);
         return null;
     };
+
+    return (
+        <AuthContext.Provider value={{ user, loading, register, login, logout, updateProfile }}>
+            {children}
+        </AuthContext.Provider>
+    );
+}
