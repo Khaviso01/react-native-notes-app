@@ -19,3 +19,8 @@ export default function Home() {
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState('All');
   const [newestFirst, setNewestFirst] = useState(true);
+
+  
+  // Filter by category + search, then sort by date added.
+  const visible = useMemo(() => {
+    const words = query.toLowerCase().split(/\s+/).filter(Boolean);
