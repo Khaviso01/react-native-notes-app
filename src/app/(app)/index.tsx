@@ -45,7 +45,9 @@ export default function Home() {
             </Text>
 
             <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: C.surface, borderRadius: 14, paddingHorizontal: 14, marginVertical: 16 }}>
-                
+                <Ionicons name="search" size={18} color={C.text} />
+                <TextInput value={query} onChangeText={setQuery} placeholder="Search" placeholderTextColor={C.muted}
+                    style={{ flex: 1, color: C.text, padding: 14 }} />
             </View>
 
 
