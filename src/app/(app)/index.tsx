@@ -1,11 +1,12 @@
 import { useState, useMemo } from 'react';
-import { View, Text, FlatList, TouchableOpacity, TextInput, Alert } from 'react-native';
+import { View, FlatList, TouchableOpacity, TextInput, Alert } from 'react-native';
+import Text from '../../components/AppText';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useAuth } from '../../context/AuthContext';
 import { useNotes } from '../../context/NotesContext';
-import { C, CATEGORIES } from '../../theme';
+import { C, CATEGORIES, FONT } from '../../theme';
 import { Note } from '../../types';
 
 // / Format epoch timestamps into a concise day-month-year string for note cards.
@@ -41,13 +42,13 @@ export default function Home() {
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: C.bg, paddingHorizontal: 20 }}>
             <Text style={{ color: C.text, fontSize: 26, fontWeight: '700', marginTop: 10 }}>
-                Good day,{'\n'}{user!.username}!
+                Good day,{'\n'}{user?.username}!
             </Text>
 
             <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: C.surface, borderRadius: 14, paddingHorizontal: 14, marginVertical: 16 }}>
                 <Ionicons name="search" size={18} color={C.text} />
                 <TextInput value={query} onChangeText={setQuery} placeholder="Search" placeholderTextColor={C.muted}
-                    style={{ flex: 1, color: C.text, padding: 14 }} />
+                    style={{ flex: 1, color: C.text, padding: 14, fontFamily: FONT.regular }} />
 
                 <TouchableOpacity onPress={() => setNewestFirst(!newestFirst)} style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Ionicons name={newestFirst ? 'arrow-down' : 'arrow-up'} size={16} color={C.accent} />

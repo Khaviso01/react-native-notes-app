@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
-import { Link } from 'expo-router';
+import { View, TouchableOpacity } from 'react-native';
+import Text from '../../components/AppText';
+import { Link, Href } from 'expo-router';
 import Field from '../../components/Field';
 import { useAuth } from '../../context/AuthContext';
-import { C } from '../../theme';
+import { C, FONT } from '../../theme';
 
 // Login screen component for authenticating existing user accounts.
 export default function Login() {
@@ -23,7 +24,7 @@ export default function Login() {
             <TouchableOpacity onPress={submit} style={{ backgroundColor: C.accent, padding: 16, borderRadius: 14, alignItems: 'center' }}>
                 <Text style={{ fontWeight: '700', fontSize: 16 }}>Log in</Text>
             </TouchableOpacity>
-            <Link href="/register" style={{ color: C.text, textAlign: 'center', marginTop: 20 }}>
+            <Link href={'/register' as Href} style={{ color: C.text, textAlign: 'center', marginTop: 20, fontFamily: FONT.regular  }}>
                 New here? <Text style={{ color: C.accent }}>Create an account</Text>
             </Link>
         </View>
