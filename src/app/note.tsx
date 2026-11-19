@@ -16,3 +16,12 @@ export default function NoteScreen() {
   const [title, setTitle] = useState(existing?.title || '');
   const [text, setText] = useState(existing?.text || '');
   const [category, setCategory] = useState(existing?.category || CATEGORIES[0]);
+
+  // Validate note content, persist
+  const save = () => {
+    // Require non-empty body text before saving a note.
+    if (!text.trim()) return Alert.alert('Note is empty', 'Write something before saving.');
+    const data = { title: title.trim(), text: text.trim(), category };
+    existing ? updateNote(existing.id, data) : addNote(data);
+    router.back();
+  };
