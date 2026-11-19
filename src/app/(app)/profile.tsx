@@ -13,3 +13,10 @@ export default function Profile() {
   const [currentPassword, setCurrent] = useState('');
   const [newPassword, setNew] = useState('');
   const [msg, setMsg] = useState({ text: '', ok: false });
+
+  // Save new credentials
+  const save = async () => {
+    const err = await updateProfile({ email, username, currentPassword, newPassword });
+    setMsg(err ? { text: err, ok: false } : { text: 'Profile updated.', ok: true });
+    if (!err) { setCurrent(''); setNew(''); }
+  };
