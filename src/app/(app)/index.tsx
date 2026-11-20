@@ -1,5 +1,6 @@
 import { useState, useMemo, useRef, ComponentRef } from 'react';
-import { View, FlatList, TouchableOpacity, TextInput, Alert, Modal, Pressable, useWindowDimensions } from 'react-native';
+import { View, FlatList, TouchableOpacity, TextInput, Modal, Pressable, useWindowDimensions } from 'react-native';
+import DeleteNoteModal from '../../components/DeleteNoteModal';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
@@ -50,12 +51,8 @@ export default function Home() {
             .sort((a, b) => (newestFirst ? b.createdAt - a.createdAt : a.createdAt - b.createdAt));
     }, [notes, query, category, newestFirst]);
 
-    // Long-press a card to delete it (with confirmation).
-    const confirmDelete = (n: Note) =>
-        Alert.alert('Delete note?', 'This cannot be undone.', [
-            { text: 'Cancel', style: 'cancel' },
-            { text: 'Delete', style: 'destructive', onPress: () => deleteNote(n.id) },
-        ]);
+    // Long-press a card to choose it for deletion. The modal below asks for confirmation.
+    const [toDelete, setToDelete] = useState<Note | null>(null);
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: C.bg, paddingHorizontal: 20 }}>
@@ -103,7 +100,7 @@ export default function Home() {
                 renderItem={({ item, index }) => (
                     <TouchableOpacity
                         onPress={() => router.push({ pathname: '/note', params: { id: item.id } })}
-                        onLongPress={() => confirmDelete(item)}
+                        onLongPress={() => setToDelete(item)}
                         style={{ flex: 1, minHeight: 170, borderRadius: 18, padding: 14, backgroundColor: C.cards[index % C.cards.length], justifyContent: 'space-between' }}
                     >
                         <View>
@@ -156,5 +153,10 @@ export default function Home() {
                 </Pressable>
             </Modal>
         </SafeAreaView>
-    );
+    ); {/* Delete confirmation (opened by long-pressing a card) */ }
+    <DeleteNoteModal
+        visible={toDelete !== null}
+        onCancel={() => setToDelete(null)}
+        onConfirm={() => { if (toDelete) deleteNote(toDelete.id); setToDelete(null); }}
+    />
 }
