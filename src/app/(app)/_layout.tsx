@@ -2,7 +2,7 @@ import { Tabs, useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { C } from '../../theme';
 
-// Bottom tab navigator component configuring primary application tab
+// Bottom bar: Home (house icon), "+" (opens the note editor), Profile (person icon).
 export default function AppTabs() {
   const router = useRouter();
   return (
@@ -15,14 +15,24 @@ export default function AppTabs() {
         tabBarStyle: { backgroundColor: C.bg, borderTopWidth: 0, height: 70 },
       }}
     >
-      <Tabs.Screen name="index" options={{ tabBarIcon: ({ color }) => <Ionicons name="person" size={24} color={color as string} /> }} />
+      {/* Left: Home screen (src/app/(app)/index.tsx) */}
+      <Tabs.Screen
+        name="index"
+        options={{ tabBarIcon: ({ color }) => <Ionicons name="home" size={24} color={color as string} /> }}
+      />
+
+      {/* Middle: "+" never shows a page, it opens the note editor instead */}
       <Tabs.Screen
         name="add"
         options={{ tabBarIcon: () => <Ionicons name="add-circle" size={40} color={C.accent} /> }}
-        // Instead of showing a tab page, open the note editor.
         listeners={{ tabPress: (e) => { e.preventDefault(); router.push('/note'); } }}
       />
-      <Tabs.Screen name="profile" options={{ tabBarIcon: ({ color }) => <Ionicons name="person" size={24} color={color as string} /> }} />
+
+      {/* Right: Profile screen (src/app/(app)/profile.tsx) */}
+      <Tabs.Screen
+        name="profile"
+        options={{ tabBarIcon: ({ color }) => <Ionicons name="person" size={24} color={color as string} /> }}
+      />
     </Tabs>
   );
 }
