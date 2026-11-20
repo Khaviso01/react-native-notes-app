@@ -22,9 +22,6 @@ All data is stored on the device using **AsyncStorage**.
 7. [Setting up password reset emails](#setting-up-password-reset-emails)
 8. [Using the app](#using-the-app)
 9. [How it works](#how-it-works)
-10. [Building the project from scratch](#building-the-project-from-scratch)
-11. [Putting the project on GitHub](#putting-the-project-on-github)
-12. [Troubleshooting](#troubleshooting)
 
 ---
 
@@ -242,56 +239,3 @@ The app has no server, so reset emails are sent through [EmailJS](https://www.em
 - **Categories:** edit the `CATEGORIES` array in `theme.ts` to add or rename categories.
 
 **Good to know:** data lives only on the device. Uninstalling the app or clearing Expo Go's storage deletes it. This is a learning project; a production app would use a backend with salted password hashing and real email links.
-
-## Building the project from scratch
-
-Only needed if you are rebuilding the project instead of cloning it.
-
-```
-npx create-expo-app@latest react-native-notes-app
-cd react-native-notes-app
-npx expo install expo-router expo-linking expo-constants expo-crypto expo-status-bar expo-font expo-splash-screen @expo-google-fonts/geist @react-native-async-storage/async-storage @expo/vector-icons react-native-safe-area-context react-native-screens
-```
-
-Then add the source files under `src/` as shown in [Project structure](#project-structure), and check these settings:
-
-- `package.json` has `"main": "expo-router/entry"`
-- `app.json` has `"scheme": "notesapp"` and, under `web`, `"output": "single"`
-- `typedRoutes` is enabled under `experiments` in `app.json` (the Expo template does this)
-
-## Putting the project on GitHub
-
-1. Create an **empty** repository on https://github.com (no README, no .gitignore).
-2. In your project folder, run:
-   ```
-   git init
-   git add .
-   git commit -m "Initial commit: notes app"
-   git branch -M main
-   git remote add origin https://github.com/YOUR-USERNAME/YOUR-REPO.git
-   git push -u origin main
-   ```
-   Replace the URL with your own repository's URL.
-
-The Expo template includes a `.gitignore` that keeps `node_modules` out of the repository. Before pushing, check that `src/config.ts` contains no keys you want to keep private. The EmailJS public key is designed for client apps, but you can leave the placeholders in a public repository.
-
-## Troubleshooting
-
-| Problem | Fix |
-|---|---|
-| `Project root directory not found` | You are not inside an Expo project. Make sure `package.json` exists in your current folder (`dir` / `ls`). |
-| `Unable to resolve module ...` | Stop the server, run `npm install`, then `npx expo start -c`. |
-| Phone cannot load the app | Same Wi-Fi? If so, try `npx expo start --tunnel`. |
-| Blank or white screen | Check that `package.json` has `"main": "expo-router/entry"`. |
-| Links or routes do not work | Check that `app.json` contains `"scheme": "notesapp"`. |
-| Red errors about `/login` or `(auth)` routes | Delete the stale route types and restart: `Remove-Item -Recurse -Force .expo` then `npx expo start -c`. |
-| "A navigator can only contain 'Screen'..." | Make sure only `Stack.Screen` / `Tabs.Screen` elements sit directly inside `<Stack>` / `<Tabs>`, then restart with `npx expo start -c`. |
-| Font looks wrong or the app stays on the splash screen | Run `npx expo install @expo-google-fonts/geist expo-font expo-splash-screen`, then restart with `-c`. |
-| Reset email does not arrive | Check the three values in `src/config.ts`, that "Allow EmailJS API for non-browser applications" is on, and your spam folder. In development, copy the link from the terminal. |
-| Delete buttons do nothing | Make sure you are using `DeleteNoteModal` (not `Alert.alert`), which also works on web. |
-| Preview image missing on GitHub | Check the path is `assets/notes-app-preview.png`, that the filename matches exactly (GitHub is case-sensitive), and that the image is committed and pushed. |
-| Expo Go says the project is incompatible | Update Expo Go from your app store, or run `npx expo install --fix`. |
-| `npx` or `npm` not recognised | Reinstall Node.js, then close and reopen the terminal. |
-| PowerShell blocks scripts | Run `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` once, then try again. |
-| Strange errors after changing files | Stop the server and run `npx expo start -c`. |
-| Check for TypeScript errors | Run `npx tsc --noEmit`. |

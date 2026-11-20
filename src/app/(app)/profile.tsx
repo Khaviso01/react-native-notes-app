@@ -81,7 +81,7 @@ export default function Profile() {
           </View>
 
           <Text style={{ color: C.muted, fontSize: 12, textAlign: 'center', marginTop: 28 }}>
-            App version {Constants.expoConfig?.version ?? '1.0.0'}
+            App version {Constants.expoConfig?.version ?? '3.0.0'}
           </Text>
         </View>
       </ScrollView>
