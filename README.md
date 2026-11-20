@@ -10,7 +10,7 @@ All data is stored on the device using **AsyncStorage**.
 
 ## Application Preview
 
-<img src="assets/notes-app-preview.png" alt="Notes app preview" width="600" />
+<img src="assets/notes-app-preview.png" alt="Notes app preview" width="600" style="border-radius: 20px;" />
 
 ## Table of contents
 1. [Features](#features)
