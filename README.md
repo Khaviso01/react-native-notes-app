@@ -4,6 +4,8 @@ A secure, dark-themed notes app built with **React Native (Expo)**, **Expo Route
 Users can register, log in, reset a forgotten password, and manage their own notes with categories, search and sorting.
 All data is stored on the device using **AsyncStorage**.
 
+[Download The Notes App APK HERE](https://drive.google.com/drive/u/0/folders/1L7zJys4r6GugmEQE3d5MCjya43qan5Jm)
+
 ---
 
 ## Application Preview
