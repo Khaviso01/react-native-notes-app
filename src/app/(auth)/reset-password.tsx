@@ -1,9 +1,10 @@
+import { Href, Link, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
-import { View, TouchableOpacity } from 'react-native';
-import { Link, Href, useLocalSearchParams } from 'expo-router';
+import { TouchableOpacity, View } from 'react-native';
 import Text from '../../components/AppText';
 import Field from '../../components/Field';
 import { useAuth } from '../../context/AuthContext';
+import AuthLayout from '../../components/AuthLayout';
 import { C, FONT } from '../../theme';
 
 // Step 2 of resetting a password. The email link opens this screen and
@@ -25,7 +26,7 @@ export default function ResetPassword() {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: C.bg, padding: 24, justifyContent: 'center' }}>
+    <AuthLayout>
       <Text style={{ color: C.text, fontSize: 32, fontWeight: '700', marginBottom: 6 }}>Reset password</Text>
       <Text style={{ color: C.muted, marginBottom: 28 }}>Choose a new password for your account.</Text>
       {done ? (
@@ -37,7 +38,7 @@ export default function ResetPassword() {
         </>
       ) : (
         <>
-          <Field label="New password" placeholder="New password (6+ characters)" secureTextEntry value={password} onChangeText={setPassword} />
+          <Field label="New password" placeholder="New password (6+ characters, 1 special)" secureTextEntry value={password} onChangeText={setPassword} />
           <Field label="Confirm new password" placeholder="Confirm new password" secureTextEntry value={confirm} onChangeText={setConfirm} />
           {!!error && <Text style={{ color: C.danger, marginBottom: 10 }}>{error}</Text>}
           <TouchableOpacity onPress={submit} style={{ backgroundColor: C.accent, padding: 16, borderRadius: 14, alignItems: 'center' }}>
@@ -45,6 +46,6 @@ export default function ResetPassword() {
           </TouchableOpacity>
         </>
       )}
-    </View>
+    </AuthLayout>
   );
 }

@@ -1,9 +1,10 @@
+import { Href, Link } from 'expo-router';
 import { useState } from 'react';
-import { View, TouchableOpacity } from 'react-native';
-import { Link, Href } from 'expo-router';
+import { TouchableOpacity, View } from 'react-native';
 import Text from '../../components/AppText';
 import Field from '../../components/Field';
 import { useAuth } from '../../context/AuthContext';
+import AuthLayout from '../../components/AuthLayout';
 import { C, FONT } from '../../theme';
 
 export default function Login() {
@@ -16,7 +17,7 @@ export default function Login() {
   const submit = async () => setError((await login(email, password)) || '');
 
   return (
-    <View style={{ flex: 1, backgroundColor: C.bg, padding: 24, justifyContent: 'center' }}>
+    <AuthLayout>
       <Text style={{ color: C.text, fontSize: 32, fontWeight: '700', marginBottom: 6 }}>Welcome back</Text>
       <Text style={{ color: C.muted, marginBottom: 28 }}>Log in to see your notes.</Text>
       <Field label="Email" placeholder="Email" keyboardType="email-address" value={email} onChangeText={setEmail} />
@@ -32,6 +33,6 @@ export default function Login() {
       <Link href={'/register' as Href} style={{ color: C.text, textAlign: 'center', marginTop: 20, fontFamily: FONT.regular }}>
         New here? <Text style={{ color: C.accent }}>Create an account</Text>
       </Link>
-    </View>
+    </AuthLayout>
   );
 }
